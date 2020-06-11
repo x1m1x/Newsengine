@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Weather - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5 ">
+    <div class="row">
+
+      <div class="col-5 offset-1">
+        <h2 class="mt-2">Weather app</h2>
+        <form action="" method="post">
+          {% csrf_token %}
+          <label>City:</label>
+          {{ form.name }}
+          <input type="submit" name="send" value="Find" class="mt-2 btn btn-danger">
+        </form>
+      </div>
+
+      <div class="col-5 offset-1">
+        <h2>Information</h2>
+        <form class="" action="{% url 'cities_delete_url' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" name="delete" class="mt-2 btn btn-danger">Delete all</button>
+        </form>
+
+
+          <div class="alert alert-danger mt-2">
+            {% for info in all_info %}
+              <div class="col-9 offset-0">
+                <b>City: {{info.city}}</b><br>
+                <b>Temperature: </b>{{info.temp}}<sup>o</sup><br>
+              </div>
+              <div class="col-6 offset-0">
+                <img src="http://openweathermap.org/img/w/{{info.icon}}.png" alt="Иконка" class="img-thumbnail">
+              </div>
+            {% endfor %}
+          </div>
+
+      </div>
+
+    </div>
+
+  </div>
+{% endblock %}

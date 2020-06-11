@@ -1,0 +1,23 @@
+{% extends 'news/base_news.html' %}
+
+{% block title %}
+  News - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  {% if page.object_list %}
+    {% for article in page.object_list %}
+      <div class="card mb-4 inline" style="width: 18rem;">
+        <div class="card-body">
+          <img src="{% if article.image == "" %}#{% else %}{{ article.image.url }}{% endif %}" alt="" width="250" height="120" class="mr-2">
+          <h5 class="card-title">{{ article.title }}</h5>
+          <p class="card-text">{{ article.body|truncatewords:10 }}</p>
+          <a href="{{ article.get_absolute_url }}" class="btn btn-primary mr-2">Read</a>
+          {{ article.pub_date }}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    There`s no content for you
+  {% endif %}
+{% endblock %}

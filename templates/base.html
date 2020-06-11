@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>
+      {% block title %}
+        Xim`s project
+      {% endblock %}
+    </title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">XimNews</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item {% if news_object %}active{% endif %}">
+            <a class="nav-link" href="{% url 'articles_list_url' %}">News <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item {% if not news_object %}active{% endif %}">
+            <a class="nav-link" href="{% url 'city_list_url' %}">Temprature</a>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-6 offset-md-2">
+          {% block content %}
+            No content for you
+          {% endblock %}
+            {% if is_paginated %}
+              <nav aria-label="Page navigation example">
+                <ul class="pagination">
+
+                  <li class="page-item {% if not previous_page %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ previous_page }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+
+                  {% for n in page.paginator.page_range %}
+                  {% if page.number == n %}
+                    <li class="page-item active" aria-current="page">
+                      <a class="page-link" href="?page={{ n }}">{{ n }}<span class="sr-only">(current)</span></a>
+                    </li>
+                  {% elif n > page.number|add:-2 and n < page.number|add:2 %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                    </li>
+                  {% endif %}
+                  {% endfor %}
+
+                  <li class="page-item {% if not next_page %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ next_page }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+
+                </ul>
+              </nav>
+            {% endif %}
+
+
+          {% if request.user.is_authenticated and request.user.is_staff %}
+            <div class="admin-panel align-items-center">
+              <a href="/admin/" class="btn btn-outline-primary">Admin</a>
+              {% block admin-panel %}{% endblock %}
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+
+
+  </body>
+</html>

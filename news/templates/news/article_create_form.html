@@ -1,0 +1,26 @@
+{% extends 'news/base_news.html' %}
+
+{% block title %}
+  Create an Article - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <form action="{% url 'article_create_url' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="form-group">
+        {% if field.errors %}
+          <div class="alert alert-danger">
+              {{ field.errors }}
+          </div>
+        {% endif %}
+        {{ field.label }}
+        {{ field }}
+      </div>
+    {% endfor %}
+
+    <button type="submit" name="button" class="btn btn-primary">Create article</button>
+
+  </form>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'news/base_news.html' %}
+
+{% block title %}
+  Delete "{{ article.title }}" - {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+  <!-- <h1>Are you sure you want to delete "{{ article.title }}" object?</h1>
+  <a href="{{ article.get_delete_url }}" class="btn btn-danger">Delete</a>
+  <a href="{% url 'articles_list_url' %}" class="btn btn-light">Cancel</a> -->
+
+  <form action="{{ article.get_delete_url }}" method="post">
+    {% csrf_token %}
+    <h3>Are you sure you want to delete <b>"{{ article.title|title}}"</b> article?</h3>
+
+    <a href="{{ article.get_absolute_url }}">Cancel</a>
+    <button type="submit" name="button" class="btn btn-danger">Delete</button>
+
+  </form>
+
+{% endblock %}

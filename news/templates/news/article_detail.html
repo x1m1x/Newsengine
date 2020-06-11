@@ -1,0 +1,28 @@
+{% extends 'news/base_news.html' %}
+
+{% block title %}
+  {{ article.title }} - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <img src="{{ image_url }}" alt="" width="750">
+  <h2>{{ article.title }}</h2>
+  <p>{{ article.body }}</p>
+  <hr>
+  <a href="{{ article.get_create_comment_url }}" class="btn btn-primary mb-3">Add comment</a>
+  {% for comment in article.comment_set.all %}
+  <div class="card mb-3">
+    <div class="card-body">
+      {% if request.user.is_authenticated and request.user.is_staff %}
+        <span><a href="{{ comment.get_delete_url }}" class="btn btn-danger">Delete</a></span>
+        <span><a href="{{ comment.get_update_url }}" class="btn btn-primary">Change</a></span>
+      {% else %}
+      {% endif %}
+      <h5 class="card-title mt-2">{{ comment.author_name }}</h5>
+      <p class="card-text">{{ comment.body }}</p>
+    </div>
+  </div>
+  <hr>
+  {% endfor %}
+
+{% endblock %}

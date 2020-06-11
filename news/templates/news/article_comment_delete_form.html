@@ -1,0 +1,18 @@
+{% extends 'news/base_news.html' %}
+
+{% block title %}
+  Delete "{{ comment.author_name }}" - {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+<form action="{{ comment.get_delete_url }}" method="post">
+  {% csrf_token %}
+  <h3>Are you sure you want to delete <b>"{{ comment.author_name|title}}"</b> comment?</h3>
+
+  <a href="{{ article.get_absolute_url }}">Cancel</a>
+  <button type="submit" name="button" class="btn btn-danger">Delete</button>
+
+</form>
+
+{% endblock %}
